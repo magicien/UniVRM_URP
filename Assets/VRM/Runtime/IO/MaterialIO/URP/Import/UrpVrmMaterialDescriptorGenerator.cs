@@ -19,7 +19,23 @@ namespace VRM
         {
             // mtoon URP "MToon" shader is not ready. import fallback to unlit
             // unlit "UniUnlit" work in URP
-            if (BuiltInGltfUnlitMaterialImporter.TryCreateParam(data, i, out var matDesc)) return matDesc;
+            if (BuiltInGltfUnlitMaterialImporter.TryCreateParam(data, i, out var matDesc)) {
+                if (_vrm.materialProperties.Count > i) {
+                    // Set renderQueue
+                    return new MaterialDescriptor(
+                        name: matDesc.Name,
+                        shader: matDesc.Shader,
+                        renderQueue: _vrm.materialProperties[i].renderQueue,
+                        textureSlots: matDesc.TextureSlots,
+                        floatValues: matDesc.FloatValues,
+                        colors: matDesc.Colors,
+                        vectors: matDesc.Vectors,
+                        actions: matDesc.Actions
+                    );
+                }
+
+                return matDesc;
+            }
             // pbr "Standard" to "Universal Render Pipeline/Lit" 
             if (UrpGltfPbrMaterialImporter.TryCreateParam(data, i, out matDesc)) return matDesc;
             // fallback
