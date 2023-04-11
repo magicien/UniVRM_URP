@@ -208,7 +208,7 @@ namespace VRMShaders
             }
             if (!useOutline)
             {
-                material.SetFloat("_OutlineWidth", 0.0001f);
+                material.SetFloat("_OutlineWidth", 0f);
             }
 
             if (!hasShadeMap && null != baseMap)
@@ -233,6 +233,8 @@ namespace VRMShaders
             {
                 material.renderQueue = matDesc.RenderQueue.Value;
             }
+
+            material.SetFloat("_CelShadeMidPoint", -0.3f);
 
             m_materials.Add(new MaterialLoadInfo(matDesc.SubAssetKey, material, false));
 
@@ -285,12 +287,15 @@ namespace VRMShaders
                     break;
                 case "_OutlineWidth":
                     keyOut = "_OutlineWidth";
-                    scaleValue = 0.005f;
+                    scaleValue = 0.01f;
                     break;
                 case "_OutlineWidthMode":
                     keyOut = "_OutlineWidthMode";
                     break;
                 case "_CutOff":
+                    keyOut = "_Cutoff";
+                    break;
+                case "_Cutoff":
                     keyOut = "_Cutoff";
                     break;
                 case "_CullMode":
